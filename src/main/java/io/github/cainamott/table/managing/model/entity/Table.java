@@ -1,6 +1,6 @@
 package io.github.cainamott.table.managing.model.entity;
 
-import io.github.cainamott.table.managing.utils.TableStatus;
+import io.github.cainamott.table.managing.model.enums.TableStatus;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 

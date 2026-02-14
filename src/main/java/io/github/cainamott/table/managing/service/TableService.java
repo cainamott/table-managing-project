@@ -1,17 +1,14 @@
 package io.github.cainamott.table.managing.service;
 
+import io.github.cainamott.table.managing.exceptions.EntityNotFoundException;
 import io.github.cainamott.table.managing.model.dto.TableDTO;
-import io.github.cainamott.table.managing.model.dto.UpdateTableStatusEntity;
+import io.github.cainamott.table.managing.model.entity.UpdateTableStatusModel;
 import io.github.cainamott.table.managing.model.entity.Table;
 import io.github.cainamott.table.managing.repository.TableRepository;
-import io.github.cainamott.table.managing.utils.TableStatus;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.cainamott.table.managing.model.enums.TableStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,13 +33,18 @@ public class TableService {
         return tableRepository.save(table);
     };
 
-    public Table updateTableStatus(UpdateTableStatusEntity entity){
-        Table table = tableRepository.findTableById(entity.id());
+    public Table updateTableStatus(UpdateTableStatusModel entity){
+        Table table = findTableById(entity.id());
         if(table != null){
             table.setStatus(entity.status());
             return tableRepository.save(table);
         }else {
-            return null;
+            throw new EntityNotFoundException("Mesa não encontrada");
         }
     }
+
+    public Table findTableById(UUID id){
+        return tableRepository.findTableById(id);
+    }
+
 }
