@@ -2,6 +2,7 @@ package io.github.cainamott.table.managing.service;
 
 import io.github.cainamott.table.managing.exceptions.EntityNotFoundException;
 import io.github.cainamott.table.managing.model.dto.TableDTO;
+import io.github.cainamott.table.managing.model.entity.UpdateReservedStatusModel;
 import io.github.cainamott.table.managing.model.entity.UpdateTableStatusModel;
 import io.github.cainamott.table.managing.model.entity.Table;
 import io.github.cainamott.table.managing.repository.TableRepository;
@@ -33,7 +34,7 @@ public class TableService {
         return tableRepository.save(table);
     };
 
-    public Table updateTableStatus(UpdateTableStatusModel entity){
+    public Table updateVacancyStatus(UpdateTableStatusModel entity){
         Table table = findTableById(entity.id());
         if(table != null){
             table.setStatus(entity.status());
@@ -45,6 +46,25 @@ public class TableService {
 
     public Table findTableById(UUID id){
         return tableRepository.findTableById(id);
+    }
+
+    public Table updateReservedStatus(UpdateReservedStatusModel entity){
+        Table table = findTableById(entity.id());
+        if(table != null){
+            table.setReserved(entity.isReserved());
+            return tableRepository.save(table);
+        } else {
+            throw new EntityNotFoundException("Mesa não encontrada");
+        }
+    }
+
+    public void deleteTableById(UUID id){
+        Table table = findTableById(id);
+        if(table != null){
+            tableRepository.delete(table);
+        } else {
+            throw new EntityNotFoundException("Mesa não encontrada");
+        }
     }
 
 }
